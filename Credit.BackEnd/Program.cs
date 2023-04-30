@@ -2,6 +2,7 @@ using Credit.Infra.Adapter.EfCore.Config;
 using Credit.Infra.Adapter.Dapper.Config;
 using Credit.Presentation.BackEnd.Filters;
 using System.Text.Json.Serialization;
+using Credit.Core.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddControllers(options => options.Filters.Add(new GlobalExcepti
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddApplication();
 
 builder.Services.AddEfCoreAdapter(builder.Configuration
     .GetSection(nameof(EfCoreAdapterOptions))
