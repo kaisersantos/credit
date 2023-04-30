@@ -1,15 +1,35 @@
+using Credit.Infra.Adapter.EfCore.Config;
+using Credit.Infra.Adapter.Dapper.Config;
+using Credit.Presentation.BackEnd.Filters;
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddControllers(options => options.Filters.Add(new GlobalExceptionFilterAttribute(builder.Environment)))
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        options.JsonSerializerOptions.AllowTrailingCommas = true;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddEfCoreAdapter(builder.Configuration
+    .GetSection(nameof(EfCoreAdapterOptions))
+    .Get<EfCoreAdapterOptions>()
+);
+
+builder.Services.AddDapperAdapter(builder.Configuration
+    .GetSection(nameof(DapperAdapterOptions))
+    .Get<DapperAdapterOptions>()
+);
+
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,6 +37,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(options => options
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+);
 
 app.UseAuthorization();
 
