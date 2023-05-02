@@ -2,6 +2,7 @@
 using Credit.Core.Domain.Entities;
 using Credit.Core.Domain.ValueObjects;
 using Credit.Infra.Adapter.Dapper.Config;
+using System.Data;
 
 namespace Credit.Infra.Adapter.Dapper
 {
@@ -11,41 +12,29 @@ namespace Credit.Infra.Adapter.Dapper
 
         private readonly string SELECT = @"
             SELECT
-                ID,
-                UID,
-                CPF,
-                NOME,
-                UF,
-                CELULAR
-            FROM CLIENTE";
+                CLI.ID,
+                CLI.UID,
+                CLI.CPF,
+                CLI.NOME,
+                CLI.UF,
+                CLI.CELULAR
+            FROM CLIENTE CLI";
 
         public ClienteRepository(CreditDbContext context) =>
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
         public async Task<Cliente> Create(Cliente cliente)
         {
-            var insert = @"
-                INSERT INTO CLIENTE (
-                    UID, 
-                    CPF, 
-                    NOME, 
-                    UF, 
-                    CELULAR
-                ) VALUES (
-                    @Uid,
-                    @Cpf,
-                    @Nome,
-                    @Uf,
-                    @Celular
-                ) OUTPUT INSERTED.ID";
+            var insert = @"SP_CLIENTE_INSERT";
 
-            var createdId = await _context.QuerySingleAsync<int>(insert, new {
+            var createdId = await _context.QuerySingleAsync<int>(insert, new
+            {
                 cliente.Uid,
                 Cpf = cliente.Cpf.ToMaskedString(),
                 cliente.Nome,
                 cliente.Uf,
                 cliente.Celular
-            });
+            }, CommandType.StoredProcedure);
 
             cliente.Id = createdId;
 
@@ -54,13 +43,7 @@ namespace Credit.Infra.Adapter.Dapper
 
         public async Task<bool> Edit(Cliente cliente)
         {
-            var update = @"
-                UPDATE CLIENTE SET 
-                    CPF = @Cpf, 
-                    NOME = @Nome, 
-                    UF = @Uf, 
-                    CELULAR = @Celular
-                WHERE ID = @Id";
+            var update = @"SP_CLIENTE_UPDATE";
 
             var affectedRows = await _context.ExecuteAsync(update, new
             {
@@ -69,18 +52,16 @@ namespace Credit.Infra.Adapter.Dapper
                 cliente.Nome,
                 cliente.Uf,
                 cliente.Celular
-            });
+            }, CommandType.StoredProcedure);
 
             return affectedRows > 0;
         }
 
         public async Task<bool> Remove(Cliente cliente)
         {
-            var update = @"
-                DELETE CLIENTE
-                WHERE ID = @Id";
+            var remove = @"SP_CLIENTE_DELETE";
 
-            var affectedRows = await _context.ExecuteAsync(update, new
+            var affectedRows = await _context.ExecuteAsync(remove, new
             {
                 cliente.Id
             });
@@ -92,7 +73,7 @@ namespace Credit.Infra.Adapter.Dapper
         {
             var select = $@"
                 {SELECT}
-                WHERE UID = @Uid";
+                WHERE CLI.UID = @Uid";
 
             return await _context.QueryFirstOrDefault<Cliente>(select, new
             {
@@ -104,7 +85,7 @@ namespace Credit.Infra.Adapter.Dapper
         {
             var select = $@"
                 {SELECT}
-                WHERE CPF = @Cpf";
+                WHERE CLI.CPF = @Cpf";
 
             return await _context.QueryFirstOrDefault<Cliente>(select, new
             {
