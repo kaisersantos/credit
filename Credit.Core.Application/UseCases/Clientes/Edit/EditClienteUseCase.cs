@@ -38,7 +38,7 @@ namespace Credit.Core.Application.UseCases.Clientes.Edit
             var edited = await _clienteRepository.Edit(clienteDb);
 
             if (!edited)
-                throw new ClienteDomainException(ClienteError.UnableToEditClient(clienteUid));
+                throw new ClienteCoreApplicationException(ClienteError.UnableToEditCliente(clienteUid));
         }
 
         private async Task ValidateInput(EditClienteInput input)
@@ -46,7 +46,7 @@ namespace Credit.Core.Application.UseCases.Clientes.Edit
             var validation = await _validator.ValidateAsync(input);
 
             if (!validation.IsValid)
-                throw new ClienteDomainException(validation.Errors);
+                throw new ClienteCoreApplicationException(validation.Errors);
         }
     }
 }

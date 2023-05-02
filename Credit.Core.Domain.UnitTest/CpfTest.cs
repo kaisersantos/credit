@@ -1,4 +1,5 @@
-﻿using Credit.Core.Domain.ValueObjects;
+﻿using Credit.Core.Domain.Exceptions.Cpf;
+using Credit.Core.Domain.ValueObjects;
 
 namespace Credit.Core.Domain.UnitTest
 {
@@ -8,12 +9,30 @@ namespace Credit.Core.Domain.UnitTest
         [InlineData(null)]
         [InlineData("")]
         [InlineData("    ")]
-        public void ShouldOccurArgumentNullException(string valor)
+        public void ShouldOccurCpfEmptyError(string valor)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() =>
+            var ex = Assert.Throws<CpfCoreDomainException>(() =>
             {
                 Cpf cpf = valor;
             });
+
+
+            Assert.Equal(CpfError.CpfEmpty.Key, ex.Errors.First().Key);
+        }
+
+        [Theory]
+        [InlineData("a")]
+        [InlineData("abc.def.ghi-jk")]
+        [InlineData("ABCDEFGHIJK")]
+        public void ShouldOccurCpfInvalidFormatError(string valor)
+        {
+            var ex = Assert.Throws<CpfCoreDomainException>(() =>
+            {
+                Cpf cpf = valor;
+            });
+
+
+            Assert.Equal(CpfError.CpfInvalidFormat(valor).Key, ex.Errors.First().Key);
         }
 
         [Theory]
@@ -22,28 +41,28 @@ namespace Credit.Core.Domain.UnitTest
         [InlineData("948.675.830-1")]
         [InlineData("948.675.830-135")]
         [InlineData("948.675.830-13")]
-        public void ShouldOccurArgumentExceptionString(string valor)
+        public void ShouldOccurCpfInvalidErrorString(string valor)
         {
-            var ex = Assert.Throws<ArgumentException>(() =>
+            var ex = Assert.Throws<CpfCoreDomainException>(() =>
             {
                 Cpf cpf = valor;
             });
 
-            Assert.Equal("This CPF is invalid.", ex.Message);
+            Assert.Equal(CpfError.CpfInvalid(valor).Key, ex.Errors.First().Key);
         }
 
         [Theory]
         [InlineData(9486758301)]
         [InlineData(948675830135)]
         [InlineData(94867583013)]
-        public void ShouldOccurArgumentExceptionLong(long valor)
+        public void ShouldOccurCpfInvalidErrorLong(long valor)
         {
-            var ex = Assert.Throws<ArgumentException>(() =>
+            var ex = Assert.Throws<CpfCoreDomainException>(() =>
             {
                 Cpf cpf = valor;
             });
 
-            Assert.Equal("This CPF is invalid.", ex.Message);
+            Assert.Equal(CpfError.CpfInvalid(valor.ToString()).Key, ex.Errors.First().Key);
         }
 
         [Theory]

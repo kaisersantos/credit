@@ -6,7 +6,7 @@ namespace Credit.Infra.Adapter.Dapper.Config
 {
     public class CreditDbContext
     {
-        private IDbConnection _connection;
+        private readonly IDbConnection _connection;
 
         public CreditDbContext(string connectionString)
         {

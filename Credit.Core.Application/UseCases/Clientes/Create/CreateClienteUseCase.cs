@@ -40,7 +40,7 @@ namespace Credit.Core.Application.UseCases.Clientes.Create
             var validation = await _validator.ValidateAsync(input);
 
             if (!validation.IsValid)
-                throw new ClienteDomainException(validation.Errors);
+                throw new ClienteCoreApplicationException(validation.Errors);
         }
 
         private async Task ValidateBusiness(Cliente cliente)
@@ -48,7 +48,7 @@ namespace Credit.Core.Application.UseCases.Clientes.Create
             var found = await _clienteRepository.FindByCpf(cliente.Cpf);
 
             if (found != null)
-                throw new ClienteDomainException(ClienteError.CpfAlreadyExists(cliente.Cpf));
+                throw new ClienteCoreApplicationException(ClienteError.CpfAlreadyExists(cliente.Cpf));
         }
     }
 }

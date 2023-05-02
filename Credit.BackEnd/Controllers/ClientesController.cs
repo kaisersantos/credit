@@ -1,6 +1,6 @@
-﻿using Credit.Core.Application.UseCases.Cliente.Create;
-using Credit.Core.Application.UseCases.Cliente.Edit;
-using Credit.Core.Application.UseCases.Cliente.Remove;
+﻿using Credit.Core.Application.UseCases.Clientes.Create;
+using Credit.Core.Application.UseCases.Clientes.Edit;
+using Credit.Core.Application.UseCases.Clientes.Remove;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Credit.Presentation.BackEnd.Controllers
@@ -14,7 +14,7 @@ namespace Credit.Presentation.BackEnd.Controllers
         private readonly IRemoveClienteUseCase _removeClienteUseCase;
 
         public ClientesController(
-            ICreateClienteUseCase createClienteUseCase, 
+            ICreateClienteUseCase createClienteUseCase,
             IEditClienteUseCase editClienteUseCase,
             IRemoveClienteUseCase removeClienteUseCase)
         {
@@ -27,13 +27,13 @@ namespace Credit.Presentation.BackEnd.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(EditClienteOutput))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateClienteOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Create(CreateClienteInput input)
         {
-            var createdBank = await _createClienteUseCase.Execute(input);
+            var createdCliente = await _createClienteUseCase.Execute(input);
 
-            return Created(Request.Path, createdBank);
+            return Created(Request.Path, createdCliente);
         }
 
         [HttpPut("{clienteUid}")]
