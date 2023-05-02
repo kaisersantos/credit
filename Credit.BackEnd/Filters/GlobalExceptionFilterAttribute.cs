@@ -16,7 +16,7 @@ namespace Credit.Presentation.BackEnd.Filters
             {
                 NotFoundException => DomainExceptionHandler(context, StatusCodes.Status404NotFound),
                 ValidationException => DomainExceptionHandler(context, StatusCodes.Status400BadRequest),
-                DomainException => DomainExceptionHandler(context, StatusCodes.Status400BadRequest),
+                Core.Application.Exceptions.CoreApplicationException => DomainExceptionHandler(context, StatusCodes.Status400BadRequest),
                 _ => InternalServerErrorExceptionHandler(context, StatusCodes.Status500InternalServerError)
             };
 
@@ -31,7 +31,7 @@ namespace Credit.Presentation.BackEnd.Filters
         {
             var problemDetails = CreateProblemDetails(context, statusCode);
 
-            if (context.Exception is DomainException domainEx)
+            if (context.Exception is Core.Application.Exceptions.CoreApplicationException domainEx)
                 problemDetails.Extensions["errors"] = domainEx.Errors;
 
             if (_env.IsDevelopment())
@@ -42,7 +42,7 @@ namespace Credit.Presentation.BackEnd.Filters
 
         private IActionResult InternalServerErrorExceptionHandler(ExceptionContext context, int statusCode)
         {
-            var ex = context.Exception as DomainException;
+            var ex = context.Exception as Core.Application.Exceptions.CoreApplicationException;
             var problemDetails = CreateProblemDetails(context, statusCode, ex?.Key);
 
             problemDetails.Detail = $"Error processing request, please contact the support.";

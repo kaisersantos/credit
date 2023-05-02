@@ -20,7 +20,7 @@ namespace Credit.Core.Application.UseCases.Clientes.Remove
             var removed = await _clienteRepository.Remove(clienteDb);
 
             if (!removed)
-                throw new ClienteDomainException(ClienteError.UnableToRemoveClient(clienteUid));
+                throw new ClienteCoreApplicationException(ClienteError.UnableToRemoveCliente(clienteUid));
         }
     }
 }

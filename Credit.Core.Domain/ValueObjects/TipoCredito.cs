@@ -1,6 +1,6 @@
 ﻿namespace Credit.Core.Domain.ValueObjects
 {
-    public enum TipoFinanciamento
+    public enum TipoCredito
     {
         Direto = 'D',
         Consignado = 'C',

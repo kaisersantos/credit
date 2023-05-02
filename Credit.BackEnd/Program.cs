@@ -19,10 +19,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 
-builder.Services.AddEfCoreAdapter(builder.Configuration
+/*builder.Services.AddEfCoreAdapter(builder.Configuration
     .GetSection(nameof(EfCoreAdapterOptions))
     .Get<EfCoreAdapterOptions>()
-);
+);*/
 
 builder.Services.AddDapperAdapter(builder.Configuration
     .GetSection(nameof(DapperAdapterOptions))

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Credit.Core.Application.Adapters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Credit.Infra.Adapter.EfCore.Config
@@ -17,6 +18,9 @@ namespace Credit.Infra.Adapter.EfCore.Config
 
             services.AddDbContext<CreditDbContext>(options =>
                 options.UseSqlServer(efCoreAdapterOptions.ConnectionString));
+
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IFinanciamentoRepository, FinanciamentoRepository>();
 
             return services;
         }

@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Credit.Core.Application\Credit.Core.Application.csproj" />
     <ProjectReference Include="..\Credit.Infra.Adapter.Dapper\Credit.Infra.Adapter.Dapper.csproj" />
     <ProjectReference Include="..\Credit.Infra.Adapter.EfCore\Credit.Infra.Adapter.EfCore.csproj" />

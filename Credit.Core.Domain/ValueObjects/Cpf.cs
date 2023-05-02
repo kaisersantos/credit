@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Credit.Core.Domain.Exceptions.Cpf;
 
 namespace Credit.Core.Domain.ValueObjects
 {
@@ -10,16 +11,19 @@ namespace Credit.Core.Domain.ValueObjects
         public Cpf(string cpf)
         {
             if (string.IsNullOrWhiteSpace(cpf))
-                throw new ArgumentNullException(nameof(cpf));
+                throw new CpfCoreDomainException(CpfError.CpfEmpty);
 
-            _valor = Regex.Replace(cpf.Trim(), @"(\w{3})(\w{3})(\w{3})(\w{2})", @"$1.$2.$3-$4");
+            _valor = Regex.Replace(cpf.Trim(), @"(\d{3})(\d{3})(\d{3})(\d{2})", @"$1.$2.$3-$4");
 
             _valorSemMascara = _valor
                 .Replace(".", "")
                 .Replace("-", "");
 
+            if (!Regex.IsMatch(_valorSemMascara, @"^[0-9]+$"))
+                throw new CpfCoreDomainException(CpfError.CpfInvalidFormat(cpf));
+
             if (!Validate(_valorSemMascara))
-                throw new ArgumentException("This CPF is invalid.");
+                throw new CpfCoreDomainException(CpfError.CpfInvalid(cpf));
         }
 
         public static implicit operator string(Cpf cpf) => cpf._valor;

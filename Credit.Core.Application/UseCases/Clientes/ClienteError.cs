@@ -1,9 +1,9 @@
-﻿using Credit.Core.Application.Exceptions;
+﻿using Credit.Core.Domain.Exceptions;
 using Credit.Core.Domain.ValueObjects;
 
 namespace Credit.Core.Application.UseCases.Clientes
 {
-    public class ClienteError : Error
+    public class ClienteError : CoreError
     {
         public static ClienteError CpfAlreadyExists(Cpf cpf) =>
             new(nameof(CpfAlreadyExists),
@@ -13,12 +13,12 @@ namespace Credit.Core.Application.UseCases.Clientes
             new(nameof(ClienteNotFoundByUid),
                 $"Client not found with Uid '{uid}'.");
 
-        public static ClienteError UnableToEditClient(Guid uid) =>
-            new(nameof(UnableToRemoveClient),
+        public static ClienteError UnableToEditCliente(Guid uid) =>
+            new(nameof(UnableToEditCliente),
                 $"Unable to edit client with Uid '{uid}'.");
 
-        public static ClienteError UnableToRemoveClient(Guid uid) =>
-            new(nameof(UnableToRemoveClient),
+        public static ClienteError UnableToRemoveCliente(Guid uid) =>
+            new(nameof(UnableToRemoveCliente),
                 $"Unable to remove client with Uid '{uid}'.");
 
         public ClienteError(string key, string message) : base(key, message) { }

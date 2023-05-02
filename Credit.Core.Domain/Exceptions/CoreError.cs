@@ -1,18 +1,18 @@
-﻿namespace Credit.Core.Application.Exceptions
+﻿namespace Credit.Core.Domain.Exceptions
 {
-    public class Error
+    public class CoreError
     {
         public string Key { get; }
 
         public ICollection<string> Messages { get; }
 
-        public Error(string key, ICollection<string> messages)
+        public CoreError(string key, ICollection<string> messages)
         {
             Key = key;
             Messages = new List<string>(messages);
         }
 
-        public Error(string key, string message)
+        public CoreError(string key, string message)
         {
             Key = key;
             Messages = new List<string>()

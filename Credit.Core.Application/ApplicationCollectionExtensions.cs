@@ -1,6 +1,7 @@
 ﻿using Credit.Core.Application.UseCases.Clientes.Create;
 using Credit.Core.Application.UseCases.Clientes.Edit;
 using Credit.Core.Application.UseCases.Clientes.Remove;
+using Credit.Core.Application.UseCases.Financiamentos.Create;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +41,7 @@ namespace Credit.Core.Application
 
         private static void AddFinanciamentoServices()
         {
-
+            _services?.AddScoped<ICreateFinanciamentoUseCase, CreateFinanciamentoUseCase>();
         }
 
         private static void AddParcelaServices()
