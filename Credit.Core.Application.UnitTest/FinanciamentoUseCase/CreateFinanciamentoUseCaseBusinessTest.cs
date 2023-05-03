@@ -1,5 +1,6 @@
 ﻿using Credit.Core.Application.Adapters;
 using Credit.Core.Application.UnitTest.ClienteUseCase;
+using Credit.Core.Application.UnitTest.ParcelaUseCase;
 using Credit.Core.Application.UseCases.Clientes;
 using Credit.Core.Application.UseCases.Financiamentos;
 using Credit.Core.Application.UseCases.Financiamentos.Create;
@@ -14,6 +15,7 @@ namespace Credit.Core.Application.UnitTest.FinanciamentoUseCase
         private readonly IValidator<CreateFinanciamentoInput> _createFinanciamentoValidator;
         private readonly Mock<IFinanciamentoRepository> _financiamentoRepositoryMock;
         private readonly Mock<IClienteRepository> _clienteRepositoryMock;
+        private readonly Mock<IParcelaRepository> _parcelaRepositoryMock;
 
         public CreateFinanciamentoUseCaseTest()
         {
@@ -22,12 +24,14 @@ namespace Credit.Core.Application.UnitTest.FinanciamentoUseCase
             _createFinanciamentoValidator = new CreateFinanciamentoInputValidator();
             _financiamentoRepositoryMock = new Mock<IFinanciamentoRepository>();
             _clienteRepositoryMock = new Mock<IClienteRepository>();
+            _parcelaRepositoryMock = new Mock<IParcelaRepository>();
 
             _createFinanciamentoUseCase = new CreateFinanciamentoUseCase(
                 _mapper,
                 _createFinanciamentoValidator,
                 _financiamentoRepositoryMock.Object,
-                _clienteRepositoryMock.Object);
+                _clienteRepositoryMock.Object,
+                _parcelaRepositoryMock.Object);
         }
 
         [Theory]
@@ -252,10 +256,19 @@ namespace Credit.Core.Application.UnitTest.FinanciamentoUseCase
                 .Setup(x => x.Create(It.IsAny<Financiamento>()))
                 .ReturnsAsync(financiamentoMock);
 
+            _financiamentoRepositoryMock
+                .Setup(x => x.Create(It.IsAny<Financiamento>()))
+                .ReturnsAsync(financiamentoMock);
+
+            _parcelaRepositoryMock
+                .Setup(x => x.Create(It.IsAny<Parcela>()))
+                .ReturnsAsync(ParcelaMocks.GetParcelaMock);
+
             await _createFinanciamentoUseCase.Execute(input);
 
             _clienteRepositoryMock.Verify(m => m.FindByUid(clienteMock.Uid), Times.Once);
             _financiamentoRepositoryMock.Verify(m => m.Create(It.IsAny<Financiamento>()), Times.Once);
+            _parcelaRepositoryMock.Verify(m => m.Create(It.IsAny<Parcela>()), Times.Exactly(input.QuantidadeParcelas));
 
             _clienteRepositoryMock.VerifyNoOtherCalls();
             _financiamentoRepositoryMock.VerifyNoOtherCalls();

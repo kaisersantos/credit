@@ -12,6 +12,14 @@ namespace Credit.Infra.Adapter.EfCore
         public ParcelaRepository(CreditDbContext context) =>
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
+        public async Task<Parcela> Create(Parcela parcela)
+        {
+            await _context.AddAsync(parcela);
+            await _context.SaveChangesAsync();
+
+            return parcela;
+        }
+
         public async Task<bool> Pagar(Parcela parcela)
         {
             _context.Update(parcela);

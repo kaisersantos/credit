@@ -22,6 +22,24 @@ namespace Credit.Infra.Adapter.Dapper
         public ParcelaRepository(CreditDbContext context) =>
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
+        public async Task<Parcela> Create(Parcela parcela)
+        {
+            var insert = @"SP_PARCELA_INSERT";
+
+            var createdId = await _context.QuerySingleAsync<int>(insert, new
+            {
+                parcela.Uid,
+                parcela.NumeroParcela,
+                parcela.ValorParcela,
+                parcela.DataVencimento,
+                parcela.FinanciamentoId
+            }, CommandType.StoredProcedure);
+
+            parcela.Id = createdId;
+
+            return parcela;
+        }
+
         public async Task<bool> Pagar(Parcela parcela)
         {
             var update = @"SP_PARCELA_UPDATE_PAGAMENTO";

@@ -13,6 +13,7 @@ namespace Credit.Core.Application.UnitTest.FinanciamentoUseCase
         private readonly IValidator<CreateFinanciamentoInput> _createFinanciamentoValidator;
         private readonly Mock<IFinanciamentoRepository> _financiamentoRepositoryMock;
         private readonly Mock<IClienteRepository> _clienteRepositoryMock;
+        private readonly Mock<IParcelaRepository> _parcelaRepositoryMock;
 
         public CreateFinanciamentoUseCaseValidationTest()
         {
@@ -21,12 +22,14 @@ namespace Credit.Core.Application.UnitTest.FinanciamentoUseCase
             _createFinanciamentoValidator = new CreateFinanciamentoInputValidator();
             _financiamentoRepositoryMock = new Mock<IFinanciamentoRepository>();
             _clienteRepositoryMock = new Mock<IClienteRepository>();
+            _parcelaRepositoryMock = new Mock<IParcelaRepository>();
 
             _createFinanciamentoUseCase = new CreateFinanciamentoUseCase(
                 _mapper,
                 _createFinanciamentoValidator,
                 _financiamentoRepositoryMock.Object,
-                _clienteRepositoryMock.Object);
+                _clienteRepositoryMock.Object,
+                _parcelaRepositoryMock.Object);
         }
 
         [Theory]

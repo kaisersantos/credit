@@ -85,7 +85,7 @@ BEGIN
         CPF = @Cpf, 
         NOME = @Nome, 
         UF = @Uf, 
-        CELULAR = @Uf
+        CELULAR = @Celular
     WHERE ID = @Id
 END
 GO

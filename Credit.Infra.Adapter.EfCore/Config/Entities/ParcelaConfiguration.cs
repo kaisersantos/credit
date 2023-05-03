@@ -8,11 +8,13 @@ namespace Credit.Infra.Adapter.EfCore.Config.Entities
     {
         public void Configure(EntityTypeBuilder<Parcela> builder)
         {
+            builder.ToTable("Parcela");
             builder.HasKey(p => p.Id);
             builder.Property(p => p.NumeroParcela).HasColumnName("Numero_Parcela");
             builder.Property(p => p.ValorParcela).HasColumnName("Valor_Parcela");
             builder.Property(p => p.DataVencimento).HasColumnName("Data_Vencimento");
             builder.Property(p => p.DataPagamento).HasColumnName("Data_Pagamento");
+            builder.Property(p => p.FinanciamentoId).HasColumnName("Financiamento_Id");
 
             builder.HasOne(p => p.Financiamento)
                 .WithMany(f => f.Parcelas);
