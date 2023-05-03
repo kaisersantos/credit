@@ -1,7 +1,7 @@
-using Credit.Infra.Adapter.EfCore.Config;
 using Credit.Infra.Adapter.Dapper.Config;
 using Credit.Presentation.BackEnd.Filters;
 using System.Text.Json.Serialization;
+using Credit.Core.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,15 +16,17 @@ builder.Services.AddControllers(options => options.Filters.Add(new GlobalExcepti
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddEfCoreAdapter(builder.Configuration
-    .GetSection(nameof(EfCoreAdapterOptions))
-    .Get<EfCoreAdapterOptions>()
-);
+builder.Services.AddApplication();
 
 builder.Services.AddDapperAdapter(builder.Configuration
     .GetSection(nameof(DapperAdapterOptions))
     .Get<DapperAdapterOptions>()
 );
+
+/*builder.Services.AddEfCoreAdapter(builder.Configuration
+    .GetSection(nameof(EfCoreAdapterOptions))
+    .Get<EfCoreAdapterOptions>()
+);*/
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 

@@ -46,3 +46,118 @@ FOREIGN KEY(FINANCIAMENTO_ID) REFERENCES FINANCIAMENTO(ID)
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
+
+CREATE PROCEDURE SP_CLIENTE_INSERT
+    (@Uid UNIQUEIDENTIFIER,
+     @Cpf NCHAR(14),
+	 @Nome NVARCHAR(100),
+	 @Uf NCHAR(2),
+	 @Celular NCHAR(15))    
+AS    
+BEGIN    
+    INSERT INTO CLIENTE (
+        UID, 
+        CPF, 
+        NOME, 
+        UF, 
+        CELULAR
+    ) VALUES (
+        @Uid,
+        @Cpf,
+        @Nome,
+        @Uf,
+        @Celular
+    )
+
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+CREATE PROCEDURE SP_CLIENTE_UPDATE
+    (@Id BIGINT,
+     @Cpf NCHAR(14),
+	 @Nome NVARCHAR(100),
+	 @Uf NCHAR(2),
+	 @Celular NCHAR(15))    
+AS    
+BEGIN    
+    UPDATE CLIENTE SET
+        CPF = @Cpf, 
+        NOME = @Nome, 
+        UF = @Uf, 
+        CELULAR = @Celular
+    WHERE ID = @Id
+END
+GO
+
+CREATE PROCEDURE SP_CLIENTE_DELETE
+    (@Id BIGINT)    
+AS    
+BEGIN    
+    DELETE CLIENTE
+    WHERE ID = @Id
+END
+GO
+
+CREATE PROCEDURE SP_FINANCIAMENTO_INSERT
+    (@Uid UNIQUEIDENTIFIER,
+	 @TipoFinanciamento CHAR(1),
+	 @ValorTotal DECIMAL(18, 2),
+	 @DataUltimoVencimento DATETIME2,
+	 @ClienteId BIGINT)
+AS    
+BEGIN    
+    INSERT INTO FINANCIAMENTO (
+	    UID,
+	    TIPO_FINANCIAMENTO,
+	    VALOR_TOTAL,
+	    DATA_ULTIMO_VENCIMENTO,
+	    CLIENTE_ID
+    ) VALUES (
+	    @Uid,
+	    @TipoFinanciamento,
+	    @ValorTotal,
+	    @DataUltimoVencimento,
+	    @ClienteId
+    )
+
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+CREATE PROCEDURE SP_PARCELA_INSERT
+    (@Uid UNIQUEIDENTIFIER,
+	 @NumeroParcela SMALLINT,
+	 @ValorParcela DECIMAL(18, 2),
+	 @DataVencimento DATETIME2,
+	 @FinanciamentoId BIGINT)
+AS    
+BEGIN    
+    INSERT INTO PARCELA (
+	    UID,
+	    NUMERO_PARCELA,
+	    VALOR_PARCELA,
+	    DATA_VENCIMENTO,
+	    FINANCIAMENTO_ID
+    ) VALUES (
+	    @Uid,
+	    @NumeroParcela,
+	    @ValorParcela,
+	    @DataVencimento,
+	    @FinanciamentoId
+    )
+
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+CREATE PROCEDURE SP_PARCELA_UPDATE_PAGAMENTO
+    (@Id BIGINT,
+     @DataPagamento DATETIME2)    
+AS    
+BEGIN    
+    UPDATE PARCELA SET
+        DATA_PAGAMENTO = @DataPagamento
+    WHERE ID = @Id
+END
+GO

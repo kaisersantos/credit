@@ -3,7 +3,7 @@
 namespace Credit.Core.Application.Exceptions
 {
     [Serializable]
-    public abstract class NotFoundException : DomainException
+    public abstract class NotFoundException : CoreApplicationException
     {
         public override string Key => nameof(NotFoundException);
 

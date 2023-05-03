@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Credit.Core.Application.Adapters;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Credit.Infra.Adapter.Dapper.Config
 {
@@ -15,6 +16,10 @@ namespace Credit.Infra.Adapter.Dapper.Config
                 throw new ArgumentNullException(nameof(dapperAdapterOptions));
 
             services.AddSingleton(new CreditDbContext(dapperAdapterOptions.ConnectionString));
+
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IFinanciamentoRepository, FinanciamentoRepository>();
+            services.AddScoped<IParcelaRepository, ParcelaRepository>();
 
             return services;
         }
