@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Credit.Core.Domain.ValueObjects;
+using FluentValidation;
 
 namespace Credit.Core.Application.UseCases.Clientes.Create
 {
@@ -8,7 +9,8 @@ namespace Credit.Core.Application.UseCases.Clientes.Create
         {
             RuleFor(x => x.Cpf)
                 .NotEmpty()
-                .MaximumLength(14);
+                .Must(value => Cpf.Validate(value))
+                .WithMessage(ClienteError.CpfInvalid.Messages.First());
 
             RuleFor(x => x.Nome)
                 .NotEmpty()
@@ -16,11 +18,11 @@ namespace Credit.Core.Application.UseCases.Clientes.Create
 
             RuleFor(x => x.Uf)
                 .NotEmpty()
-                .MaximumLength(2);
+                .Length(2);
 
             RuleFor(x => x.Celular)
                 .NotEmpty()
-                .MaximumLength(15);
+                .Length(15);
         }
     }
 }

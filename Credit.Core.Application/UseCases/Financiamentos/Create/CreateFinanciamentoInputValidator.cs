@@ -11,24 +11,20 @@ namespace Credit.Core.Application.UseCases.Financiamentos.Create
         public CreateFinanciamentoInputValidator()
         {
             RuleFor(x => x.TipoCredito)
+                .NotEmpty()
                 .Matches("^(D|C|J|F|I)$", RegexOptions.IgnoreCase)
                 .WithMessage(CreditoError.InvalidValue.Messages.First());
 
             RuleFor(x => x.ValorCredito)
-                .GreaterThanOrEqualTo(15000)
-                .When(x => x.TipoCredito.ToEnum<TipoCredito>() == TipoCredito.PessoaJuridica);
-
-            var oneMillion = 1000000;
-            RuleFor(x => x.ValorCredito)
-                .LessThanOrEqualTo(oneMillion);
+                .NotEmpty()
+                .GreaterThan(0);
 
             RuleFor(x => x.QuantidadeParcelas)
-                .GreaterThanOrEqualTo(5)
-                .LessThanOrEqualTo(72);
+                .NotEmpty()
+                .GreaterThan(0);
 
             RuleFor(x => x.DataPrimeiroVencimento)
-                .GreaterThanOrEqualTo(DateTime.Now.AddDays(15))
-                .LessThanOrEqualTo(DateTime.Now.AddDays(40));
+                .NotEmpty();
         }
     }
 }

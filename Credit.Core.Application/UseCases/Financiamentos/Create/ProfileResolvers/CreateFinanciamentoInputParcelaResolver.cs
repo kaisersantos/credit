@@ -3,7 +3,7 @@ using Credit.Core.Domain.Entities;
 
 namespace Credit.Core.Application.UseCases.Financiamentos.Create.ProfileResolvers
 {
-    internal class CreateFinanciamentoParcelaResolver : IValueResolver<CreateFinanciamentoInput, Financiamento, ICollection<Parcela>?>
+    internal class CreateFinanciamentoInputParcelaResolver : IValueResolver<CreateFinanciamentoInput, Financiamento, ICollection<Parcela>?>
     {
         public ICollection<Parcela>? Resolve(CreateFinanciamentoInput source, Financiamento destination, ICollection<Parcela>? destMember, ResolutionContext context)
         {

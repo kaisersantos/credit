@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Credit.Core.Application.Exceptions;
+using Credit.Core.Domain.Exceptions;
 
 namespace Credit.Presentation.BackEnd.Filters
 {
@@ -14,9 +15,9 @@ namespace Credit.Presentation.BackEnd.Filters
         {
             var result = context.Exception switch
             {
-                NotFoundException => DomainExceptionHandler(context, StatusCodes.Status404NotFound),
-                ValidationException => DomainExceptionHandler(context, StatusCodes.Status400BadRequest),
-                Core.Application.Exceptions.CoreApplicationException => DomainExceptionHandler(context, StatusCodes.Status400BadRequest),
+                NotFoundException => CoreExceptionHandler(context, StatusCodes.Status404NotFound),
+                CoreDomainException => CoreExceptionHandler(context, StatusCodes.Status400BadRequest),
+                CoreApplicationException => CoreExceptionHandler(context, StatusCodes.Status400BadRequest),
                 _ => InternalServerErrorExceptionHandler(context, StatusCodes.Status500InternalServerError)
             };
 
@@ -27,11 +28,11 @@ namespace Credit.Presentation.BackEnd.Filters
             }
         }
 
-        private IActionResult DomainExceptionHandler(ExceptionContext context, int statusCode)
+        private IActionResult CoreExceptionHandler(ExceptionContext context, int statusCode)
         {
             var problemDetails = CreateProblemDetails(context, statusCode);
 
-            if (context.Exception is Core.Application.Exceptions.CoreApplicationException domainEx)
+            if (context.Exception is CoreApplicationException domainEx)
                 problemDetails.Extensions["errors"] = domainEx.Errors;
 
             if (_env.IsDevelopment())
@@ -42,7 +43,7 @@ namespace Credit.Presentation.BackEnd.Filters
 
         private IActionResult InternalServerErrorExceptionHandler(ExceptionContext context, int statusCode)
         {
-            var ex = context.Exception as Core.Application.Exceptions.CoreApplicationException;
+            var ex = context.Exception as CoreApplicationException;
             var problemDetails = CreateProblemDetails(context, statusCode, ex?.Key);
 
             problemDetails.Detail = $"Error processing request, please contact the support.";

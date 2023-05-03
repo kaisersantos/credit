@@ -19,6 +19,7 @@ namespace Credit.Infra.Adapter.Dapper.Config
 
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IFinanciamentoRepository, FinanciamentoRepository>();
+            services.AddScoped<IParcelaRepository, ParcelaRepository>();
 
             return services;
         }

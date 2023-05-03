@@ -2,6 +2,7 @@
 
 namespace Credit.Core.Domain.Exceptions
 {
+    [Serializable]
     public class CoreDomainException : CoreException
     {
         public override string Key => nameof(CoreDomainException);

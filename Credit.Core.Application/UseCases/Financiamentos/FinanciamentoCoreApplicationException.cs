@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Credit.Core.Application.UseCases.Financiamentos
 {
+    [Serializable]
     public class FinanciamentoCoreApplicationException : CoreApplicationException
     {
         public override string Key => nameof(FinanciamentoCoreApplicationException);

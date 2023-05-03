@@ -1,8 +1,8 @@
-﻿using Credit.Core.Domain.Exceptions;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace Credit.Core.Domain.Exceptions.Cpf
 {
+    [Serializable]
     public class CpfCoreDomainException : CoreDomainException
     {
         public override string Key => nameof(CpfCoreDomainException);
