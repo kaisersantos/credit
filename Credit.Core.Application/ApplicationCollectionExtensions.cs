@@ -1,7 +1,9 @@
-﻿using Credit.Core.Application.UseCases.Clientes.Create;
+﻿using Credit.Core.Application.UseCases.Clientes.ChangeCpf;
+using Credit.Core.Application.UseCases.Clientes.Create;
 using Credit.Core.Application.UseCases.Clientes.Edit;
 using Credit.Core.Application.UseCases.Clientes.Remove;
 using Credit.Core.Application.UseCases.Financiamentos.Create;
+using Credit.Core.Application.UseCases.Parcelas.Pagar;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +38,7 @@ namespace Credit.Core.Application
         {
             _services?.AddScoped<ICreateClienteUseCase, CreateClienteUseCase>();
             _services?.AddScoped<IEditClienteUseCase, EditClienteUseCase>();
+            _services?.AddScoped<IChangeCpfClienteUseCase, ChangeCpfClienteUseCase>();
             _services?.AddScoped<IRemoveClienteUseCase, RemoveClienteUseCase>();
         }
 
@@ -46,7 +49,7 @@ namespace Credit.Core.Application
 
         private static void AddParcelaServices()
         {
-
+            _services?.AddScoped<IPagarParcelaUseCase, PagarParcelaUseCase>();
         }
     }
 }

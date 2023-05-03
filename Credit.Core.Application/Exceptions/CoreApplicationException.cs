@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Credit.Core.Application.Exceptions
 {
+    [Serializable]
     public class CoreApplicationException : CoreException
     {
         public override string Key => nameof(CoreApplicationException);

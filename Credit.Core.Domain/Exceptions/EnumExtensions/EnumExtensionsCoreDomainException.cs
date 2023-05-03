@@ -2,6 +2,7 @@
 
 namespace Credit.Core.Domain.Exceptions.EnumExtensions
 {
+    [Serializable]
     public class EnumExtensionsCoreDomainException : CoreDomainException
     {
         public override string Key => nameof(EnumExtensionsCoreDomainException);

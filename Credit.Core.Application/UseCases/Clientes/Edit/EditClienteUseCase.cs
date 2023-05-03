@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using Credit.Core.Application.Adapters;
+using Credit.Core.Application.UseCases.Financiamentos;
 using Credit.Core.Domain.Entities;
 using FluentValidation;
 
 namespace Credit.Core.Application.UseCases.Clientes.Edit
 {
-    internal class EditClienteUseCase : IEditClienteUseCase
+    public class EditClienteUseCase : IEditClienteUseCase
     {
         private readonly IMapper _mapper;
         private readonly IValidator<EditClienteInput> _validator;
@@ -22,14 +23,17 @@ namespace Credit.Core.Application.UseCases.Clientes.Edit
                 throw new ArgumentNullException(nameof(clienteRepository));
         }
 
-        public async Task Execute(Guid clienteUid, EditClienteInput input)
+        public async Task Execute(string clienteUid, EditClienteInput input)
         {
             await ValidateInput(input);
 
+            if (!Guid.TryParse(clienteUid, out var clienteUidParsed))
+                throw new ClienteCoreApplicationException(ClienteError.UidInvalido(clienteUid));
+
             var editCliente = _mapper.Map<Cliente>(input);
 
-            var clienteDb = await _clienteRepository.FindByUid(clienteUid) ??
-                throw new ClienteNotFoundException(ClienteError.ClienteNotFoundByUid(clienteUid));
+            var clienteDb = await _clienteRepository.FindByUid(clienteUidParsed) ??
+                throw new ClienteNotFoundException(ClienteError.ClienteNotFoundByUid(clienteUidParsed));
 
             clienteDb.Nome = editCliente.Nome;
             clienteDb.Uf = editCliente.Uf;
@@ -38,7 +42,7 @@ namespace Credit.Core.Application.UseCases.Clientes.Edit
             var edited = await _clienteRepository.Edit(clienteDb);
 
             if (!edited)
-                throw new ClienteCoreApplicationException(ClienteError.UnableToEditCliente(clienteUid));
+                throw new ClienteCoreApplicationException(ClienteError.UnableToEditCliente(clienteUidParsed));
         }
 
         private async Task ValidateInput(EditClienteInput input)

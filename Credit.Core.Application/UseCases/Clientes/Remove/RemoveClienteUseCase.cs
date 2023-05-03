@@ -1,8 +1,9 @@
 ﻿using Credit.Core.Application.Adapters;
+using Credit.Core.Application.UseCases.Financiamentos;
 
 namespace Credit.Core.Application.UseCases.Clientes.Remove
 {
-    internal class RemoveClienteUseCase : IRemoveClienteUseCase
+    public class RemoveClienteUseCase : IRemoveClienteUseCase
     {
         private readonly IClienteRepository _clienteRepository;
 
@@ -12,15 +13,18 @@ namespace Credit.Core.Application.UseCases.Clientes.Remove
                 throw new ArgumentNullException(nameof(clienteRepository));
         }
 
-        public async Task Execute(Guid clienteUid)
+        public async Task Execute(string clienteUid)
         {
-            var clienteDb = await _clienteRepository.FindByUid(clienteUid) ??
-                throw new ClienteNotFoundException(ClienteError.ClienteNotFoundByUid(clienteUid));
+            if (!Guid.TryParse(clienteUid, out var clienteUidParsed))
+                throw new ClienteCoreApplicationException(ClienteError.UidInvalido(clienteUid));
+
+            var clienteDb = await _clienteRepository.FindByUid(clienteUidParsed) ??
+                throw new ClienteNotFoundException(ClienteError.ClienteNotFoundByUid(clienteUidParsed));
 
             var removed = await _clienteRepository.Remove(clienteDb);
 
             if (!removed)
-                throw new ClienteCoreApplicationException(ClienteError.UnableToRemoveCliente(clienteUid));
+                throw new ClienteCoreApplicationException(ClienteError.UnableToRemoveCliente(clienteUidParsed));
         }
     }
 }

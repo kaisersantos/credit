@@ -21,6 +21,7 @@ namespace Credit.Infra.Adapter.EfCore.Config
 
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IFinanciamentoRepository, FinanciamentoRepository>();
+            services.AddScoped<IParcelaRepository, ParcelaRepository>();
 
             return services;
         }

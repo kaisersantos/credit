@@ -2,6 +2,6 @@
 {
     public interface IRemoveClienteUseCase
     {
-        Task Execute(Guid clienteUid);
+        Task Execute(string clienteUid);
     }
 }

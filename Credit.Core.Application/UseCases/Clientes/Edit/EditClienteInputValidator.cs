@@ -12,11 +12,11 @@ namespace Credit.Core.Application.UseCases.Clientes.Edit
 
             RuleFor(x => x.Uf)
                 .NotEmpty()
-                .MaximumLength(2);
+                .Length(2);
 
             RuleFor(x => x.Celular)
                 .NotEmpty()
-                .MaximumLength(15);
+                .Length(15);
         }
     }
 }

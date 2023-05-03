@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace Credit.Core.Application.UseCases.Clientes.Create
 {
-    internal class CreateClienteUseCase : ICreateClienteUseCase
+    public class CreateClienteUseCase : ICreateClienteUseCase
     {
         private readonly IMapper _mapper;
         private readonly IValidator<CreateClienteInput> _validator;

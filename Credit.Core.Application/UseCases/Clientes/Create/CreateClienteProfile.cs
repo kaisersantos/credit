@@ -16,7 +16,8 @@ namespace Credit.Core.Application.UseCases.Clientes.Create
                     input.Celular = input.Celular.Trim();
                 });
 
-            CreateMap<Cliente, CreateClienteOutput>();
+            CreateMap<Cliente, CreateClienteOutput>()
+                .ForMember(dest => dest.Cpf, opt => opt.MapFrom(source => source.Cpf.ToMaskedString()));
         }
     }
 }

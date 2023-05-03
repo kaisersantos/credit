@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Credit.Core.Application.UseCases.Clientes
 {
+    [Serializable]
     public class ClienteCoreApplicationException : CoreApplicationException
     {
         public override string Key => nameof(ClienteCoreApplicationException);

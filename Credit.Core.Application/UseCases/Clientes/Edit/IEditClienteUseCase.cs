@@ -2,6 +2,6 @@
 {
     public interface IEditClienteUseCase
     {
-        Task Execute(Guid clienteUid, EditClienteInput input);
+        Task Execute(string clienteUid, EditClienteInput input);
     }
 }
