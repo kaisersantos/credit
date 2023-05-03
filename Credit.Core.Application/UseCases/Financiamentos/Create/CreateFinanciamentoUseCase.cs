@@ -15,12 +15,14 @@ namespace Credit.Core.Application.UseCases.Financiamentos.Create
         private readonly IValidator<CreateFinanciamentoInput> _validator;
         private readonly IFinanciamentoRepository _financiamentoRepository;
         private readonly IClienteRepository _clienteRepository;
+        private readonly IParcelaRepository _parcelaRepository;
 
         public CreateFinanciamentoUseCase(
             IMapper mapper,
             IValidator<CreateFinanciamentoInput> validator,
             IFinanciamentoRepository financiamentoRepository,
-            IClienteRepository clienteRepository)
+            IClienteRepository clienteRepository,
+            IParcelaRepository parcelaRepository)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _validator = validator ?? throw new ArgumentNullException(nameof(validator));
@@ -28,6 +30,8 @@ namespace Credit.Core.Application.UseCases.Financiamentos.Create
                 throw new ArgumentNullException(nameof(financiamentoRepository));
             _clienteRepository = clienteRepository ??
                 throw new ArgumentNullException(nameof(clienteRepository));
+            _parcelaRepository = parcelaRepository ??
+                throw new ArgumentNullException(nameof(parcelaRepository));
         }
 
         public async Task<CreateFinanciamentoOutput> Execute(CreateFinanciamentoInput input)
@@ -40,9 +44,13 @@ namespace Credit.Core.Application.UseCases.Financiamentos.Create
             {
                 var financiamento = _mapper.Map<Financiamento>(input);
 
+                financiamento.Uid = Guid.NewGuid();
                 financiamento.ClienteId = cliente.Id;
+                financiamento.DataUltimoVencimento = input.DataPrimeiroVencimento.AddMonths(input.QuantidadeParcelas).Date;
 
                 var createdFinanciamento = await _financiamentoRepository.Create(financiamento);
+
+                createdFinanciamento.Parcelas = await CreateParcelas(input, createdFinanciamento);
 
                 var result = _mapper.Map<CreateFinanciamentoOutput>(createdFinanciamento);
 
@@ -90,6 +98,25 @@ namespace Credit.Core.Application.UseCases.Financiamentos.Create
                 return false;
 
             return true;
+        }
+
+        private async Task<List<Parcela>> CreateParcelas(CreateFinanciamentoInput input, Financiamento financiamento)
+        {
+            List<Parcela> createdParcelas = new();
+
+            for (int i = 0; i < input.QuantidadeParcelas; i++)
+            {
+                createdParcelas.Add(await _parcelaRepository.Create(new()
+                {
+                    Uid = Guid.NewGuid(),
+                    NumeroParcela = (short)(i + 1),
+                    DataVencimento = input.DataPrimeiroVencimento.AddMonths(i),
+                    ValorParcela = financiamento.ValorTotalComJuros / input.QuantidadeParcelas,
+                    FinanciamentoId = financiamento.Id
+                }));
+            }
+
+            return createdParcelas;
         }
     }
 }

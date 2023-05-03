@@ -16,13 +16,13 @@ namespace Credit.Presentation.BackEnd.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateFinanciamentoOutput))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateFinanciamentoOutput))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Create(CreateFinanciamentoInput input)
         {
             var createdFinanciamento = await _createFinanciamentoUseCase.Execute(input);
 
-            return Created(Request.Path, createdFinanciamento);
+            return Ok(createdFinanciamento);
         }
     }
 }

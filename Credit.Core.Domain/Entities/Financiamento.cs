@@ -12,7 +12,7 @@
 
         public DateTime DataPrimeiroVencimento { get; set; }
 
-        public DateTime DataUltimoVencimento { get => DataPrimeiroVencimento.AddMonths(QuantidadeParcelas); }
+        public DateTime DataUltimoVencimento { get; set; }
 
         public Credito? Credito { get; set; }
 

@@ -30,6 +30,8 @@ namespace Credit.Core.Application.UseCases.Clientes.Create
 
             await ValidateBusiness(cliente);
 
+            cliente.Uid = Guid.NewGuid();
+
             var createdCliente = await _clienteRepository.Create(cliente);
 
             return _mapper.Map<CreateClienteOutput>(createdCliente);

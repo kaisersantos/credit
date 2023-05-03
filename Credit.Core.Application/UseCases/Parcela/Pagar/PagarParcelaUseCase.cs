@@ -18,6 +18,8 @@ namespace Credit.Core.Application.UseCases.Parcelas.Pagar
         {
             var parcelaDb = await ValidateInput(input);
 
+            parcelaDb.DataPagamento = input.DataPagamento.Date;
+
             var pago = await _parcelaRepository.Pagar(parcelaDb);
 
             if (!pago)

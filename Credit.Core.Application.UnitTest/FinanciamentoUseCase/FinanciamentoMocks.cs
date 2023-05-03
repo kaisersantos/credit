@@ -26,50 +26,7 @@ namespace Credit.Core.Application.UnitTest.FinanciamentoUseCase
             QuantidadeParcelas = 5,
             Credito = new CreditoDireto(),
             DataPrimeiroVencimento = DataAtual.AddDays(15).Date,
-            ValorTotal = 5000,
-            Parcelas = new List<Parcela>()
-            {
-                new Parcela()
-                {
-                    Uid = RandomGuidMock,
-                    NumeroParcela = 1,
-                    ValorParcela = 1100,
-                    DataVencimento = DataAtual.AddDays(15).Date,
-                    FinanciamentoId = 1
-                },
-                new Parcela()
-                {
-                    Uid = RandomGuidMock,
-                    NumeroParcela = 2,
-                    ValorParcela = 1100,
-                    DataVencimento = DataAtual.AddMonths(1).AddDays(15).Date,
-                    FinanciamentoId = 1
-                },
-                new Parcela()
-                {
-                    Uid = RandomGuidMock,
-                    NumeroParcela = 3,
-                    ValorParcela = 1100,
-                    DataVencimento = DataAtual.AddMonths(2).AddDays(15).Date,
-                    FinanciamentoId = 1
-                },
-                new Parcela()
-                {
-                    Uid = RandomGuidMock,
-                    NumeroParcela = 4,
-                    ValorParcela = 1100,
-                    DataVencimento = DataAtual.AddMonths(3).AddDays(15).Date,
-                    FinanciamentoId = 1
-                },
-                new Parcela()
-                {
-                    Uid = RandomGuidMock,
-                    NumeroParcela = 500,
-                    ValorParcela = 1100,
-                    DataVencimento = DataAtual.AddMonths(4).AddDays(15).Date,
-                    FinanciamentoId = 1
-                }
-            }
+            ValorTotal = 5000
         };
 
         public static CreateFinanciamentoOutput GetFinanciamentoOutputMock => new()

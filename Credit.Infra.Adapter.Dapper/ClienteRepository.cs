@@ -64,7 +64,7 @@ namespace Credit.Infra.Adapter.Dapper
             var affectedRows = await _context.ExecuteAsync(remove, new
             {
                 cliente.Id
-            });
+            }, CommandType.StoredProcedure);
 
             return affectedRows > 0;
         }

@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "4454da95-121f-4374-8806-e63282550924",
+		"name": "Credit API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4565955",
+		"_collection_link": "https://www.postman.com/heinekenbh/workspace/credit-api/collection/4565955-4454da95-121f-4374-8806-e63282550924?action=share&creator=4565955&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Create Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cpf\": \"211.749.150-21\",\r\n  \"nome\": \"Kaiser Santos\",\r\n  \"uf\": \"MG\",\r\n  \"celular\": \"(31) 98765-4321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7193/api/clientes",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7193",
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Cliente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Kaiser Gabriel\",\r\n  \"uf\": \"RN\",\r\n  \"celular\": \"(31) 91234-5678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7193/api/clientes/972bd9fd-0164-440d-a059-ea03d87d8a34",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7193",
+							"path": [
+								"api",
+								"clientes",
+								"972bd9fd-0164-440d-a059-ea03d87d8a34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change CPF",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cpf\": \"862.763.830-66\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7193/api/clientes/972bd9fd-0164-440d-a059-ea03d87d8a34",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7193",
+							"path": [
+								"api",
+								"clientes",
+								"972bd9fd-0164-440d-a059-ea03d87d8a34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7193/api/clientes/B7ABFAC5-F859-49C2-B00C-50EF337845F3",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7193",
+							"path": [
+								"api",
+								"clientes",
+								"B7ABFAC5-F859-49C2-B00C-50EF337845F3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Financiamento",
+			"item": [
+				{
+					"name": "Create Financiamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clienteUid\": \"97309659-f58c-404e-b7cd-9d46848a3b26\",\r\n  \"valorCredito\": 20000,\r\n  \"tipoCredito\": \"J\",\r\n  \"quantidadeParcelas\": 10,\r\n  \"dataPrimeiroVencimento\": \"2023-05-18\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7193/api/financiamentos",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7193",
+							"path": [
+								"api",
+								"financiamentos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Parcela",
+			"item": [
+				{
+					"name": "Pagar Parcela",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"uid\": \"782E5BFE-5DC3-4FD9-AA7D-792105C9768E\",\r\n  \"dataPagamento\": \"2023-05-03\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7193/api/parcelas",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7193",
+							"path": [
+								"api",
+								"parcelas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

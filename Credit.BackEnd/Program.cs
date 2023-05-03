@@ -1,4 +1,3 @@
-using Credit.Infra.Adapter.EfCore.Config;
 using Credit.Infra.Adapter.Dapper.Config;
 using Credit.Presentation.BackEnd.Filters;
 using System.Text.Json.Serialization;
@@ -19,15 +18,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 
-/*builder.Services.AddEfCoreAdapter(builder.Configuration
-    .GetSection(nameof(EfCoreAdapterOptions))
-    .Get<EfCoreAdapterOptions>()
-);*/
-
 builder.Services.AddDapperAdapter(builder.Configuration
     .GetSection(nameof(DapperAdapterOptions))
     .Get<DapperAdapterOptions>()
 );
+
+/*builder.Services.AddEfCoreAdapter(builder.Configuration
+    .GetSection(nameof(EfCoreAdapterOptions))
+    .Get<EfCoreAdapterOptions>()
+);*/
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
